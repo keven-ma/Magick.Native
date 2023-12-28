@@ -5,7 +5,7 @@ $1/build.zlib.sh
 $1/build.lzma.sh
 $1/build.bzlib.sh
 $1/../android-arm64/build.zip.sh
-$1/build.xml.sh
+$1/../android-arm64/build.xml.sh
 $1/build.png.sh
 $1/../android-arm64/build.freetype.sh
 $1/../android-arm64/build.fontconfig.sh
