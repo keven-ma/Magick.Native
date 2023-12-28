@@ -28,6 +28,7 @@ buildNative() {
     local library_name=$(getLibraryName $quantum)
     local hdri_enable=0
     local depth=8
+    local option_openmp="OFF"
     if [ "$quantum" == "Q16" ]; then
         depth=16
     elif [ "$quantum" == "Q16-HDRI" ]; then
@@ -36,13 +37,26 @@ buildNative() {
         hdri_enable=1
     fi
 
+    if [ "$openmp" == "OpenMP" ]; then
+        option_openmp="ON"
+    fi
+
     if [ -d $quantum ]; then
         rm -Rf $quantum
     fi
     mkdir $quantum
     cd $quantum
 
-    $CMAKE_COMMAND $CMAKE_OPTIONS -DDEPTH=$depth -DHDRI_ENABLE=$hdri_enable -DQUANTUM_NAME=$quantum_name -DLIBRARY_NAME=$library_name -DPLATFORM=$PLATFORM -DCMAKE_CXX_FLAGS="$STRICT_FLAGS -Wno-unused-function" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE ..
+    $CMAKE_COMMAND $CMAKE_OPTIONS \
+          -DOPENMP=$option_openmp \
+          -DDEPTH=$depth \
+          -DHDRI_ENABLE=$hdri_enable \
+          -DQUANTUM_NAME=$quantum_name \
+          -DLIBRARY_NAME=$library_name \
+          -DPLATFORM=$PLATFORM \
+          -DCMAKE_CXX_FLAGS="$STRICT_FLAGS -Wno-unused-function" \
+          -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE \
+          ..
     make
 
     cd ..

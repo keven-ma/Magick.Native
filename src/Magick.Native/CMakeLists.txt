@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 2.8...3.22)
 
 project(${LIBRARY_NAME})
 
-set(OPENMP false BOOL)
+# set(OPENMP false BOOL)
+option(OPENMP "link OPENMP library" OFF)
 
 add_definitions(-DMAGICK_NATIVE_${PLATFORM} -DMAGICKCORE_QUANTUM_DEPTH=${DEPTH} -DMAGICKCORE_HDRI_ENABLE=${HDRI_ENABLE})
 
@@ -60,6 +61,12 @@ elseif (NOT PLATFORM STREQUAL "WASM")
     if (OPENMP)
         set(LIBOPENMP -fopenmp)
     endif()
+endif()
+
+if (PLATFORM STREQUAL "ANDROID")
+    unset(LIBOPENMP)
+    unset(LIBRESOLV)
+    set(LIBINTL ${LIB_DIR}/libintl.a)
 endif()
 
 set(LIBAOM ${LIB_DIR}/libaom.a)
